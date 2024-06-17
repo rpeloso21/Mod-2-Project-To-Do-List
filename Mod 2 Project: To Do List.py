@@ -11,7 +11,7 @@ def add_task():
     #add importance
     while True:
         try:
-            importance = int(input("On a scale of 1-5 (1 is very important and 5 is not very important) how important is this task? "))
+            importance = int(input("\nOn a scale of 1-5 (1 is very important and 5 is not very important) how important is this task? "))
             if importance < 1 or importance > 5:
                 raise ValueError
         except ValueError:
@@ -59,13 +59,13 @@ def add_task():
 
     task.append("incomplete")
     task_list.append(task)
-    print(f"Task {task[1]} added successfully")
+    print(f"Task '{task[1]}' added successfully \n")
 
 
 def view_tasks():
-    print(f"\nYou currently have {len(task_list)} tasks.\nHow would you like to view your tasks?: ")
+    print(f"\nYou currently have {len(task_list)} task(s).\nHow would you like to view your task(s)?: ")
 
-    task_view_input = input("1. View All Tasks \n2. View Incomplete Tasks \n3. View Completed Tasks \n4. View Todays Tasks \n ")
+    task_view_input = input("1. View All Tasks \n2. View Incomplete Tasks \n3. View Completed Tasks \n4. View Todays Tasks \nSelection:  ")
     while True:
 
         if task_view_input == "1":
@@ -75,7 +75,7 @@ def view_tasks():
                 print("------------------------------------------------------------------")
                 print(f"{task_number}. \n   Importance: {task[0]} \n   Name: {task[1]} \n   Due Date: {task[2]}\n   {task[3]}")
             if task_number == 0:
-                print("You don't have any tasks currently.")
+                print("You don't have any tasks currently. \n")
             else:
                 print("------------------------------------------------------------------")
             break
@@ -88,7 +88,7 @@ def view_tasks():
                     print("------------------------------------------------------------------")
                     print(f"{task_number}. \n   Importance: {task[0]} \n   Name: {task[1]} \n   Due Date: {task[2]}\n   {task[3]}")
             if task_number == 0:
-                print("You don't have any incomplete tasks currently.")
+                print("You don't have any incomplete tasks currently. \n")
             else:
                 print("------------------------------------------------------------------")
             break
@@ -101,7 +101,7 @@ def view_tasks():
                     print("------------------------------------------------------------------")
                     print(f"{task_number}. \n   Importance: {task[0]} \n   Name: {task[1]} \n   Due Date: {task[2]}\n   {task[3]}")
             if task_number == 0:
-                print("You don't have any completed tasks currently.")
+                print("You don't have any completed tasks currently. \n")
             else:
                 print("------------------------------------------------------------------")
             break
@@ -111,11 +111,15 @@ def view_tasks():
             today = input("What is today's date (mm/dd/yyyy)? ")
             for task in task_list:
                 if task[2] == today:
+                    print("\nToday's task(s) are: ")
+                    break
+            for task in task_list:
+                if task[2] == today:
                     task_number += 1
                     print("------------------------------------------------------------------")
-                    print(f"Today's tasks are:\n{task_number}. \n   Importance: {task[0]} \n   Name: {task[1]} \n   Due Date: {task[2]}\n   {task[3]}")
+                    print(f"{task_number}. \n   Importance: {task[0]} \n   Name: {task[1]} \n   Due Date: {task[2]}\n   {task[3]}")
             if task_number == 0:
-                print("You don't have any tasks due today.")
+                print("You don't have any tasks due today. \n")
             else:
                 print("------------------------------------------------------------------")
             break
@@ -126,27 +130,56 @@ def view_tasks():
 
 
 def mark_complete():
-    print("Here are your uncompleted tasks:")
+    if len(task_list) == 0:
+        return print("\nYou do not have any tasks in your list.\n")
+    
+    count = 0
+    for task in task_list:
+        count += 1
+        if task[3] != "complete":
+            break
+        elif count == len(task_list):
+            return print("\nYou do not have any 'uncompleted' tasks.\n")
+    
+    print("\nHere are your uncompleted tasks:")
     for task in task_list:
         if task[3] != "complete":
-            print(task[1])
-    complete_input = input("What is the name of the task that you would like to mark as complete?").lower()
+            print(f"- {task[1]}")
+
+    complete_input = input("\nWhat is the name of the task that you would like to mark as complete?").lower()
+    counter = 0
     for task in task_list:
-        if complete_input == task[1]:
+        counter += 1
+        if complete_input == task[1].lower():
             task[3] = "complete"
-            print(f"{task[1]} successfully marked complete!")
+            print(f"\n'{task[1]}' successfully marked complete!\n")
+            break
+        elif counter == len(task_list):
+            print("\nThat task in not in your 'uncompleted task' list.\n")
+            break
+
+
     
 
 def delete_task():
-    print("Here are your tasks:")
+    if len(task_list) == 0:
+        return print("\nYou do not have any tasks in your list.\n")
+    
+    print("\nHere are your tasks:")
     for task in task_list:
-        print(task[1])
+        print(f"- {task[1]}")
 
-    delete_input = input("What is the name of the task that you would like to delete? ").lower()
+    delete_input = input("\nWhat is the name of the task that you would like to delete? ").lower()
+    counter = 0
     for task in task_list:
-        if delete_input == task[1]:
-            print(f"Task ({task[1]}) removed successfully")
+        counter += 1
+        if delete_input == task[1].lower():
+            print(f"\n'{task[1]}'  successfully removed.\n")
             task_list.remove(task)
+            break
+        elif counter == len(task_list):
+            print("\nThat task is not in your list. \n")
+            break
 
 
 
